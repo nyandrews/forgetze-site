@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgetze — Never forget a name again</title>
+<meta name="description" content="Forgetze helps you remember people by what you recall about them — where you met, what they drive, their kids' names. Private, on-device, for iPhone and iPad.">
+<style>
+  :root {
+    --accent: #007AFF;
+    --bg: #F2F2F7;
+    --surface: #FFFFFF;
+    --text: #1C1C1E;
+    --text-secondary: #6E6E73;
+    --divider: rgba(60, 60, 67, 0.12);
+    --radius: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --accent: #0A84FF;
+      --bg: #000000;
+      --surface: #1C1C1E;
+      --text: #FFFFFF;
+      --text-secondary: #98989E;
+      --divider: rgba(84, 84, 88, 0.5);
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
+  header { padding: 20px 0; }
+  .nav { display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+  .nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+
+  .hero { text-align: center; padding: 56px 0 40px; }
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .hero p.sub {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 0 auto 28px;
+  }
+  .cta {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    padding: 14px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .cta-note { display: block; margin-top: 12px; font-size: 0.85rem; color: var(--text-secondary); }
+
+  /* Phone mockup mirroring the real app UI */
+  .phone {
+    width: 300px; margin: 48px auto 0; background: var(--surface);
+    border-radius: 36px; border: 6px solid var(--text);
+    padding: 20px 14px 28px; text-align: left;
+  }
+  .phone .app-title { font-weight: 800; font-size: 1.4rem; margin: 4px 4px 10px; }
+  .phone .search {
+    background: var(--bg); border-radius: 10px; padding: 9px 12px;
+    color: var(--text-secondary); font-size: 0.85rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .phone .search .mic { margin-left: auto; color: var(--accent); }
+  .phone .row { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-bottom: 1px solid var(--divider); }
+  .phone .row:last-child { border-bottom: none; }
+  .phone .avatar {
+    width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
+    color: #fff; font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .phone .row .name { font-weight: 600; font-size: 0.9rem; }
+  .phone .row .note { font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
+  .phone .row .note mark { background: rgba(0, 122, 255, 0.25); color: inherit; border-radius: 3px; padding: 0 1px; }
+
+  section { padding: 48px 0; }
+  section h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    text-align: center; margin-bottom: 32px;
+  }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border-radius: var(--radius); padding: 24px; }
+  .card .icon { font-size: 1.6rem; margin-bottom: 10px; }
+  .card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+  .card p { font-size: 0.95rem; color: var(--text-secondary); }
+
+  .steps { max-width: 560px; margin: 0 auto; counter-reset: step; }
+  .step { display: flex; gap: 16px; margin-bottom: 20px; }
+  .step .num {
+    counter-increment: step; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .step .num::before { content: counter(step); }
+  .step p { color: var(--text-secondary); }
+  .step p strong { color: var(--text); }
+
+  .pricing { text-align: center; }
+  .price-card {
+    background: var(--surface); border-radius: var(--radius);
+    max-width: 420px; margin: 0 auto; padding: 32px 24px;
+  }
+  .price-card .price { font-size: 2.5rem; font-weight: 800; }
+  .price-card .price small { font-size: 1rem; font-weight: 500; color: var(--text-secondary); }
+  .price-card ul { list-style: none; margin: 18px 0 0; text-align: left; }
+  .price-card li { padding: 6px 0; color: var(--text-secondary); }
+  .price-card li::before { content: "✓  "; color: var(--accent); font-weight: 700; }
+
+  footer {
+    border-top: 1px solid var(--divider);
+    padding: 32px 0 48px; text-align: center;
+    font-size: 0.9rem; color: var(--text-secondary);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer .links { margin-bottom: 8px; }
+  footer .links a { margin: 0 10px; }
+</style>
+</head>
+<body>
+
+<header class="container">
+  <nav class="nav">
+    <span class="brand">Forgetze</span>
+    <a href="privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero container">
+    <h1>Never forget a name again</h1>
+    <p class="sub">You remember the face, the conversation, the kids' names — everything except the name. Forgetze finds people by what you <em>do</em> remember.</p>
+    <a class="cta" href="#pricing">Download on the App&nbsp;Store</a>
+    <span class="cta-note">Coming soon for iPhone and iPad</span>
+
+    <div class="phone" aria-hidden="true">
+      <div class="app-title">Forgetze</div>
+      <div class="search">🔍 tesla<span class="mic">🎤</span></div>
+      <div class="row">
+        <div class="avatar">SS</div>
+        <div>
+          <div class="name">Sarah Smith</div>
+          <div class="note">…drives a silver <mark>Tesla</mark> Model 3…</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="avatar">MJ</div>
+        <div>
+          <div class="name">Marcus Johnson</div>
+          <div class="note">…test drove a <mark>Tesla</mark> last spring…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="container">
+    <h2>How it works</h2>
+    <div class="steps">
+      <div class="step"><span class="num"></span><p><strong>Meet someone.</strong> Save the details you'd otherwise forget — where you met, what they do, their spouse and kids, anything at all.</p></div>
+      <div class="step"><span class="num"></span><p><strong>Forget their name.</strong> It happens to everyone. That's the whole point.</p></div>
+      <div class="step"><span class="num"></span><p><strong>Search what you remember.</strong> Type or speak "drives a Tesla" or "met at the hiking club" — and there they are.</p></div>
+    </div>
+  </section>
+
+  <section class="container">
+    <h2>Built to remember, designed for privacy</h2>
+    <div class="cards">
+      <div class="card"><div class="icon">🔍</div><h3>Search anything you remember</h3><p>Every note, family member, address, and link is searchable — by typing or by voice.</p></div>
+      <div class="card"><div class="icon">👨‍👩‍👧</div><h3>The whole picture</h3><p>Birthdays, spouses, children, addresses, and social links — the details that make a person memorable.</p></div>
+      <div class="card"><div class="icon">🔒</div><h3>100% on your device</h3><p>No accounts, no cloud, no analytics, no ads. Your notes about people never leave your iPhone.</p></div>
+      <div class="card"><div class="icon">📥</div><h3>Easy start, safe keeping</h3><p>Import from Apple Contacts in one tap, and back up your library to a local file anytime.</p></div>
+    </div>
+  </section>
+
+  <section class="container pricing" id="pricing">
+    <h2>Simple, honest pricing</h2>
+    <div class="price-card">
+      <div class="price">Free <small>for up to 15 people</small></div>
+      <ul>
+        <li>Every feature included from day one</li>
+        <li>Unlimited people: one-time $4.99 unlock</li>
+        <li>No subscription. No ads. Ever.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="links">
+      <a href="privacy.html">Privacy policy</a>
+      <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
+    </div>
+    <div>© 2026 Forgetze. All data stays on your device.</div>
+  </div>
+</footer>
+
+</body>
+</html>
