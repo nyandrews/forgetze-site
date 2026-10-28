@@ -1,7 +1,7 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "dashboard.forgetze.com" }],
       "destination": "https://us.posthog.com/project/519477/dashboard/2262114",
       "permanent": false
