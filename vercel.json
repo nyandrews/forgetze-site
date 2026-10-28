@@ -3,7 +3,7 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "dashboard.forgetze.com" }],
-      "destination": "https://us.posthog.com/project/519477/dashboard/2262114",
+      "destination": "https://us.posthog.com/project/694584/dashboard/2272791",
       "permanent": false
     }
   ]

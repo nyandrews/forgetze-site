@@ -63,11 +63,11 @@
 
 <main class="container">
   <h1>Privacy policy</h1>
-  <p class="updated">Last updated: October 26, 2026</p>
+  <p class="updated">Last updated: October 28, 2026</p>
 
   <div class="card">
     <h2>The short version</h2>
-    <p>Your people stay on your device and, if you use iCloud sync, in your own iCloud, which only you can read. We never see them, and we never sell or share anything. The only thing Forgetze sends is optional, anonymous feature counts, which you can turn off.</p>
+    <p>Your people stay on your device and, if you use iCloud sync, in your own iCloud, which only you can read. We never see them, and we never sell or share anything. The only thing Forgetze sends is optional, anonymous feature counts, which you can turn off. The website counts visits anonymously, too.</p>
   </div>
 
   <div class="card">
@@ -78,6 +78,11 @@
   <div class="card">
     <h2>Anonymous usage counts</h2>
     <p>To learn which features get used, Forgetze sends anonymous counts (for example, "a person was added" or "search was used") to PostHog, an analytics service. These counts are never tied to your name or identity, never include your people, notes, or what you search for, and use a random ID that isn't linked to you. You can turn this off at any time in Settings under Privacy.</p>
+  </div>
+
+  <div class="card">
+    <h2>This website</h2>
+    <p>When you open a page on forgetze.com, we count the visit with PostHog. The count includes only the page and the site that sent you here. The website sets no cookies, saves nothing on your device, and doesn't record your internet address or location. We can't tell who visited.</p>
   </div>
 
   <div class="card">
@@ -114,6 +119,34 @@
     <p>Questions about privacy? Email <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>.</p>
   </div>
 </main>
+
+<script>
+  // Counts this visit in PostHog (the same project as the app's usage counts).
+  // No cookies and nothing saved on the device. The project keeps no internet
+  // addresses and looks up no location. Visits from a local test copy are skipped.
+  (function () {
+    if (!/forgetze\.com$/.test(location.hostname)) return;
+    var ref = document.referrer ? new URL(document.referrer).hostname : '$direct';
+    fetch('https://us.i.posthog.com/i/v0/e/', {
+      method: 'POST',
+      keepalive: true,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: 'phc_oZvER5XWAVAjzLkEb7QpvsjMjHuJivPQgRBppamzeuyo',
+        event: '$pageview',
+        distinct_id: 'web-' + Math.random().toString(36).slice(2),
+        properties: {
+          $process_person_profile: false,
+          $current_url: location.href,
+          $host: location.hostname,
+          $pathname: location.pathname,
+          $referrer: document.referrer || '$direct',
+          $referring_domain: ref
+        }
+      })
+    }).catch(function () {});
+  })();
+</script>
 
 </body>
 </html>

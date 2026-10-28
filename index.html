@@ -214,5 +214,33 @@
   </div>
 </footer>
 
+<script>
+  // Counts this visit in PostHog (the same project as the app's usage counts).
+  // No cookies and nothing saved on the device. The project keeps no internet
+  // addresses and looks up no location. Visits from a local test copy are skipped.
+  (function () {
+    if (!/forgetze\.com$/.test(location.hostname)) return;
+    var ref = document.referrer ? new URL(document.referrer).hostname : '$direct';
+    fetch('https://us.i.posthog.com/i/v0/e/', {
+      method: 'POST',
+      keepalive: true,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: 'phc_oZvER5XWAVAjzLkEb7QpvsjMjHuJivPQgRBppamzeuyo',
+        event: '$pageview',
+        distinct_id: 'web-' + Math.random().toString(36).slice(2),
+        properties: {
+          $process_person_profile: false,
+          $current_url: location.href,
+          $host: location.hostname,
+          $pathname: location.pathname,
+          $referrer: document.referrer || '$direct',
+          $referring_domain: ref
+        }
+      })
+    }).catch(function () {});
+  })();
+</script>
+
 </body>
 </html>
