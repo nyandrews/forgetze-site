@@ -100,10 +100,10 @@
   /* Screenshots */
   .gallery { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 1fr); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
   .gallery figure { margin: 0; scroll-snap-align: start; }
-  .gallery img { border-radius: 22px; border: 1px solid var(--frame); }
+  .gallery img, .gallery video { display: block; width: 100%; height: auto; border-radius: 22px; border: 1px solid var(--frame); background: #F2F2F7; }
   .gallery figcaption { text-align: center; font-weight: 600; font-size: 15px; margin-top: 10px; }
   .gallery.wide { grid-auto-columns: minmax(300px, 1fr); }
-  .gallery.wide img { border-radius: 16px; }
+  .gallery.wide img, .gallery.wide video { border-radius: 16px; }
   .gallery[hidden] { display: none; }
   .devices { display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 20px; background: var(--card); border: 1px solid var(--frame); border-radius: 12px; }
   .devices button { font: inherit; font-size: 15px; font-weight: 600; color: var(--muted); background: none; border: 0; border-radius: 9px; padding: 8px 16px; cursor: pointer; }
@@ -239,6 +239,7 @@
       <button type="button" role="tab" id="tab-ipad" aria-controls="shots-ipad" aria-selected="false" tabindex="-1">iPad</button>
     </div>
     <div class="gallery" id="shots-iphone" role="tabpanel" aria-labelledby="tab-iphone">
+      <figure><video class="tour" width="660" height="1434" poster="/screenshots/iphone-tour-poster.webp" muted loop autoplay playsinline preload="none" aria-label="A short tour on iPhone: typing the clue tesla finds Sarah Smith, then her notes, phone numbers and family"><source src="/screenshots/iphone-tour.mp4" type="video/mp4"></video><figcaption>Watch it work</figcaption></figure>
       <figure><img src="/screenshots/iphone-list.webp" width="660" height="1434" loading="lazy" alt="Everyone you know in one list, on iPhone"><figcaption>Everyone you know, in one list</figcaption></figure>
       <figure><img src="/screenshots/iphone-search.webp" width="660" height="1434" loading="lazy" alt="Searching for a clue, on iPhone"><figcaption>Find anyone by what you recall</figcaption></figure>
       <figure><img src="/screenshots/iphone-detail.webp" width="660" height="1434" loading="lazy" alt="A person's notes, phone numbers and family, on iPhone"><figcaption>Everything about them, together</figcaption></figure>
@@ -247,6 +248,7 @@
       <figure><img src="/screenshots/iphone-dark-detail.webp" width="660" height="1434" loading="lazy" alt="A person's details in dark mode, on iPhone"><figcaption>Every detail, in dark mode</figcaption></figure>
     </div>
     <div class="gallery wide" id="shots-ipad" role="tabpanel" aria-labelledby="tab-ipad" hidden>
+      <figure><video class="tour" width="1032" height="1376" poster="/screenshots/ipad-tour-poster.webp" muted loop playsinline preload="none" aria-label="A short tour on iPad: typing the clue tesla finds Sarah Smith, then her notes, phone numbers and family"><source src="/screenshots/ipad-tour.mp4" type="video/mp4"></video><figcaption>Watch it work</figcaption></figure>
       <figure><img src="/screenshots/ipad-list.webp" width="1032" height="1376" loading="lazy" alt="Your people, on iPad"><figcaption>List and details, side by side</figcaption></figure>
       <figure><img src="/screenshots/ipad-search.webp" width="1032" height="1376" loading="lazy" alt="Searching for a clue, on iPad"><figcaption>Find anyone by what you recall</figcaption></figure>
       <figure><img src="/screenshots/ipad-detail.webp" width="1032" height="1376" loading="lazy" alt="A person's details, on iPad"><figcaption>Everything about them, at a glance</figcaption></figure>
@@ -422,6 +424,23 @@
         .catch(function () { status.textContent = 'The message could not be sent. Please email hello@forgetze.com instead.'; status.className = 'status bad'; })
         .then(function () { button.disabled = false; });
     });
+  })();
+</script>
+
+<script>
+  // Tour videos: play only while their tab is showing, and stay still for people who ask to reduce motion.
+  (function () {
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var vids = [].slice.call(document.querySelectorAll('video.tour'));
+    function sync() {
+      vids.forEach(function (v) {
+        var showing = !v.closest('[hidden]');
+        if (still) { v.removeAttribute('autoplay'); v.controls = showing; v.pause(); return; }
+        if (showing) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else { v.pause(); }
+      });
+    }
+    document.querySelectorAll('.devices [role="tab"]').forEach(function (t) { t.addEventListener('click', function () { setTimeout(sync, 0); }); });
+    sync();
   })();
 </script>
 
