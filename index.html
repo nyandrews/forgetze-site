@@ -1,198 +1,307 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forgetze — Never forget a name again</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forgetze · Never forget a name again</title>
+<meta name="description" content="Forgetze finds people by what you remember about them: where you met, what they drive, their kids' names. Private, no account, for iPhone and iPad. On the App Store now.">
+<meta property="og:title" content="Forgetze · Never forget a name again">
+<meta property="og:description" content="Find people by what you remember about them. Private, no account, for iPhone and iPad.">
+<meta property="og:image" content="https://forgetze.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Forgetze: Never forget a name again. Find people by what you remember about them.">
+<meta property="og:url" content="https://forgetze.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://forgetze.com/">
+<meta name="theme-color" content="#161179">
+<meta name="apple-itunes-app" content="app-id=6754284075">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-title" content="Forgetze">
-<meta name="description" content="Forgetze helps you remember people by what you recall about them — where you met, what they drive, their kids' names. Private, on-device, for iPhone and iPad.">
 <style>
+  /* Colors come from the app icon: deep indigo, and the rainbow brain. */
   :root {
-    --accent: #007AFF;
-    --bg: #F2F2F7;
-    --surface: #FFFFFF;
-    --text: #1C1C1E;
-    --text-secondary: #6E6E73;
-    --divider: rgba(60, 60, 67, 0.12);
-    --radius: 12px;
+    color-scheme: light dark;
+    --indigo: #161179; --indigo-deep: #0E0A55; --gold: #FFC93C;
+    --c-cyan: #12AEDB; --c-blue: #2B6CF6; --c-purple: #8E44E8; --c-pink: #E83A86;
+    --c-red: #E5484D; --c-orange: #F08A12; --c-yellow: #E0A800; --c-green: #1FA85A;
+    --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --muted: #6A6A70; --link: #3B30D4; --frame: #D1D1D6;
   }
   @media (prefers-color-scheme: dark) {
-    :root {
-      --accent: #0A84FF;
-      --bg: #000000;
-      --surface: #1C1C1E;
-      --text: #FFFFFF;
-      --text-secondary: #98989E;
-      --divider: rgba(84, 84, 88, 0.5);
-    }
+    :root { --bg: #000000; --card: #1C1C1E; --text: #F2F2F7; --muted: #9A9AA1; --link: #9C97FF; --frame: #3A3A3C; }
   }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  .container { max-width: 960px; margin: 0 auto; padding: 0 16px; }
-  header { padding: 20px 0; }
-  .nav { display: flex; align-items: center; justify-content: space-between; }
-  .brand { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
-  .nav a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); }
+  img, video { display: block; max-width: 100%; height: auto; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  .rainbow { background: linear-gradient(90deg, var(--c-cyan), var(--c-blue), var(--c-purple), var(--c-pink), var(--c-red), var(--c-orange), var(--c-yellow), var(--c-green)); }
 
-  .hero { text-align: center; padding: 56px 0 40px; }
-  .hero h1 {
-    font-size: clamp(2rem, 6vw, 3.25rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 16px;
-  }
-  .hero p.sub {
-    font-size: 1.15rem;
-    color: var(--text-secondary);
-    max-width: 560px;
-    margin: 0 auto 28px;
-  }
-  .cta {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-weight: 600;
-    padding: 14px 28px;
-    border-radius: 999px;
-    text-decoration: none;
-  }
-  .cta-note { display: block; margin-top: 12px; font-size: 0.85rem; color: var(--text-secondary); }
+  /* Top bar */
+  .top { background: var(--indigo); color: #fff; }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+  nav { display: flex; gap: 20px; font-size: 15px; }
+  nav a { color: rgba(255,255,255,.85); text-decoration: none; }
+  nav a:hover { color: #fff; }
+  nav a.pill { background: #fff; color: var(--indigo); font-weight: 700; padding: 6px 14px; border-radius: 999px; }
+  @media (max-width: 700px) { nav a:not(.pill) { display: none; } }
 
-  /* Phone mockup mirroring the real app UI */
-  .phone {
-    width: 300px; margin: 48px auto 0; background: var(--surface);
-    border-radius: 36px; border: 6px solid var(--text);
-    padding: 20px 14px 28px; text-align: left;
+  /* Hero */
+  .hero { background: radial-gradient(900px 500px at 85% 20%, #2A22B8 0%, transparent 60%), var(--indigo); color: #fff; overflow: hidden; position: relative; }
+  .hero .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 6px; z-index: 2; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,.9fr); gap: 40px; align-items: center; padding-top: 48px; }
+  .hero h1 { font-size: clamp(38px, 6vw, 64px); line-height: 1.04; margin: 0 0 18px; letter-spacing: -0.025em; }
+  .hero h1 span { color: var(--gold); }
+  .hero .lead { font-size: 20px; color: rgba(255,255,255,.86); margin: 0 0 28px; max-width: 30em; }
+  .hero-copy { padding-bottom: 56px; }
+  .hero .shot { align-self: end; max-width: 380px; justify-self: center; position: relative; z-index: 1; }
+  .hero .phone { border-radius: 38px 38px 0 0; border: 7px solid #3A33B8; border-bottom: 0; background: #F2F2F7; box-shadow: 0 -6px 24px rgba(0,0,0,.28); }
+  @media (max-width: 800px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 8px; text-align: center; }
+    .hero .lead { margin-left: auto; margin-right: auto; }
+    .hero-copy { padding-bottom: 24px; }
+    .stores, .chips { justify-content: center; }
+    .hero .shot { max-width: 290px; }
   }
-  .phone .app-title { font-weight: 800; font-size: 1.4rem; margin: 4px 4px 10px; }
-  .phone .search {
-    background: var(--bg); border-radius: 10px; padding: 9px 12px;
-    color: var(--text-secondary); font-size: 0.85rem;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .phone .search .mic { margin-left: auto; color: var(--accent); }
-  .phone .row { display: flex; align-items: center; gap: 10px; padding: 11px 4px; border-bottom: 1px solid var(--divider); }
-  .phone .row:last-child { border-bottom: none; }
-  .phone .avatar {
-    width: 34px; height: 34px; border-radius: 50%; background: var(--accent);
-    color: #fff; font-size: 0.7rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .phone .row .name { font-weight: 600; font-size: 0.9rem; }
-  .phone .row .note { font-size: 0.75rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 190px; }
-  .phone .row .note mark { background: rgba(0, 122, 255, 0.25); color: inherit; border-radius: 3px; padding: 0 1px; }
 
-  section { padding: 48px 0; }
-  section h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
-    font-weight: 800; letter-spacing: -0.02em;
-    text-align: center; margin-bottom: 32px;
-  }
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-  .card { background: var(--surface); border-radius: var(--radius); padding: 24px; }
-  .card .icon { font-size: 1.6rem; margin-bottom: 10px; }
-  .card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
-  .card p { font-size: 0.95rem; color: var(--text-secondary); }
+  /* Store buttons */
+  .stores { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .store { display: inline-flex; align-items: center; gap: 10px; padding: 11px 22px; border-radius: 12px; font-weight: 600; font-size: 17px; text-decoration: none; line-height: 1.2; text-align: left; }
+  .store svg { width: 24px; height: 24px; flex: none; }
+  .store small { display: block; font-weight: 400; font-size: 12px; opacity: .8; }
+  .store.apple { background: #fff; color: #000; }
+  .store.apple:hover { background: #f2f2f2; }
+  .store.ghost { border: 1.5px solid rgba(255,255,255,.4); color: #fff; }
+  .store.ghost:hover { background: rgba(255,255,255,.1); }
+  .note { margin-top: 14px; font-size: 15px; color: rgba(255,255,255,.75); }
 
-  .steps { max-width: 560px; margin: 0 auto; counter-reset: step; }
-  .step { display: flex; gap: 16px; margin-bottom: 20px; }
-  .step .num {
-    counter-increment: step; flex-shrink: 0;
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--accent); color: #fff;
-    display: flex; align-items: center; justify-content: center; font-weight: 700;
-  }
-  .step .num::before { content: counter(step); }
-  .step p { color: var(--text-secondary); }
-  .step p strong { color: var(--text); }
+  /* Clue chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; margin: 0; padding: 0; }
+  .chips li { background: var(--card); border: 1px solid var(--frame); border-radius: 999px; padding: 8px 16px; font-weight: 600; font-size: 16px; }
+  .chips li::before { content: "\201C"; color: var(--link); }
+  .chips li::after { content: "\201D"; color: var(--link); }
 
-  .pricing { text-align: center; }
-  .price-card {
-    background: var(--surface); border-radius: var(--radius);
-    max-width: 420px; margin: 0 auto; padding: 32px 24px;
-  }
-  .price-card .price { font-size: 2.5rem; font-weight: 800; }
-  .price-card .price small { font-size: 1rem; font-weight: 500; color: var(--text-secondary); }
-  .price-card ul { list-style: none; margin: 18px 0 0; text-align: left; }
-  .price-card li { padding: 6px 0; color: var(--text-secondary); }
-  .price-card li::before { content: "✓  "; color: var(--accent); font-weight: 700; }
+  /* Sections */
+  section { padding: 64px 0; }
+  h2 { font-size: clamp(28px, 4vw, 40px); line-height: 1.12; margin: 0 0 10px; letter-spacing: -0.015em; }
+  .sub { color: var(--muted); font-size: 19px; margin: 0 0 32px; max-width: 36em; }
 
-  footer {
-    border-top: 1px solid var(--divider);
-    padding: 32px 0 48px; text-align: center;
-    font-size: 0.9rem; color: var(--text-secondary);
-  }
-  footer a { color: var(--accent); text-decoration: none; }
-  footer .links { margin-bottom: 8px; }
-  footer .links a { margin: 0 10px; }
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; counter-reset: s; }
+  .step { background: var(--card); border-radius: 16px; padding: 24px; counter-increment: s; }
+  .step::before { content: counter(s); display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--indigo); color: #fff; font-weight: 800; margin-bottom: 14px; }
+  .step h3 { margin: 0 0 6px; font-size: 20px; }
+  .step p { margin: 0; color: var(--muted); }
+
+  /* Screenshots */
+  .gallery { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(220px, 1fr); gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+  .gallery figure { margin: 0; scroll-snap-align: start; }
+  .gallery img { border-radius: 22px; border: 1px solid var(--frame); }
+  .gallery figcaption { text-align: center; font-weight: 600; font-size: 15px; margin-top: 10px; }
+  .gallery.wide { grid-auto-columns: minmax(300px, 1fr); }
+  .gallery.wide img { border-radius: 16px; }
+  .gallery[hidden] { display: none; }
+  .devices { display: inline-flex; gap: 4px; padding: 4px; margin: 0 0 20px; background: var(--card); border: 1px solid var(--frame); border-radius: 12px; }
+  .devices button { font: inherit; font-size: 15px; font-weight: 600; color: var(--muted); background: none; border: 0; border-radius: 9px; padding: 8px 16px; cursor: pointer; }
+  .devices button[aria-selected="true"] { background: var(--indigo); color: #fff; }
+  .devices button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+  /* Features */
+  .features { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+  .feature { background: var(--card); border-radius: 16px; padding: 22px 22px 18px; border-top: 5px solid var(--c); }
+  .feature h3 { font-size: 19px; margin: 0 0 6px; }
+  .feature p { margin: 0; color: var(--muted); font-size: 16px; }
+  .more-title { font-size: 19px; margin: 36px 0 8px; }
+  .more { background: var(--card); border-radius: 16px; margin: 0; padding: 14px 24px 14px 42px; columns: 2 300px; column-gap: 36px; }
+  .more li { padding: 5px 0; break-inside: avoid; color: var(--muted); }
+  .more li strong { color: var(--text); }
+
+  /* Pricing */
+  .price-card { background: var(--card); border-radius: 20px; max-width: 560px; padding: 32px; border-top: 5px solid var(--indigo); }
+  .price-card .price { font-size: 44px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
+  .price-card .price small { font-size: 18px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
+  .price-card ul { list-style: none; margin: 18px 0 0; padding: 0; }
+  .price-card li { padding: 6px 0 6px 28px; position: relative; }
+  .price-card li::before { content: "✓"; position: absolute; left: 0; color: var(--c-green); font-weight: 800; }
+
+  /* Contact form */
+  .contact { background: var(--card); }
+  .contact form { max-width: 560px; display: grid; gap: 14px; }
+  .contact label { display: grid; gap: 6px; font-weight: 600; font-size: 15px; }
+  .contact input, .contact select, .contact textarea { font: inherit; font-weight: 400; color: var(--text); background: var(--bg); border: 1.5px solid var(--frame); border-radius: 10px; padding: 11px 12px; width: 100%; }
+  .contact textarea { min-height: 140px; resize: vertical; }
+  .contact input:focus, .contact select:focus, .contact textarea:focus { outline: 3px solid var(--link); outline-offset: 1px; }
+  .contact button { font: inherit; font-weight: 700; background: var(--indigo); color: #fff; border: 0; border-radius: 12px; padding: 13px 24px; cursor: pointer; justify-self: start; }
+  .contact button:hover { background: #231CA3; }
+  .contact button[disabled] { opacity: .6; cursor: default; }
+  .contact button:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+  .contact .trap { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+  .contact .status { margin: 0; min-height: 1.5em; font-weight: 600; }
+  .contact .status.ok { color: var(--c-green); }
+  .contact .status.bad { color: var(--c-red); }
+  @media (prefers-color-scheme: dark) { .contact .status.ok { color: #4CD080; } .contact .status.bad { color: #FF7A7E; } .contact button { background: #4A3FE0; } .contact button:hover { background: #5D53F0; } }
+
+  /* Get the app */
+  .get { background: var(--indigo); color: #fff; text-align: center; position: relative; }
+  .get .sub { color: rgba(255,255,255,.82); margin-left: auto; margin-right: auto; }
+  .get .stores { justify-content: center; }
+  .get .note a { color: #fff; }
+  .get .bar { position: absolute; left: 0; right: 0; top: 0; height: 6px; }
+
+  footer { padding: 32px 0 48px; color: var(--muted); font-size: 15px; text-align: center; }
+  footer p { margin: 8px 0 0; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 
-<header class="container">
-  <nav class="nav">
-    <span class="brand">Forgetze</span>
-    <a href="privacy.html">Privacy</a>
-  </nav>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/icon-96.png" alt="" width="36" height="36"><span>Forgetze</span></a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="#screens">Screenshots</a>
+      <a href="#features">Features</a>
+      <a href="#contact">Contact</a>
+      <a href="/privacy.html">Privacy</a>
+      <a class="pill" href="https://apps.apple.com/app/id6754284075">Get the app</a>
+    </nav>
+  </div>
 </header>
 
-<main>
-  <div class="hero container">
-    <h1>Never forget a name again</h1>
-    <p class="sub">You remember the face, the conversation, the kids' names — everything except the name. Forgetze finds people by what you <em>do</em> remember.</p>
-    <a class="cta" href="#pricing">Download on the App&nbsp;Store</a>
-    <span class="cta-note">Coming soon for iPhone and iPad</span>
-
-    <div class="phone" aria-hidden="true">
-      <div class="app-title">Forgetze</div>
-      <div class="search">🔍 tesla<span class="mic">🎤</span></div>
-      <div class="row">
-        <div class="avatar">SS</div>
-        <div>
-          <div class="name">Sarah Smith</div>
-          <div class="note">…drives a silver <mark>Tesla</mark> Model 3…</div>
-        </div>
+<div class="hero">
+  <div class="wrap">
+    <div class="hero-copy">
+      <h1>Never forget a <span>name</span> again.</h1>
+      <p class="lead">You remember the face, the conversation, the kids' names. Everything except the name. Forgetze finds people by what you <em>do</em> remember.</p>
+      <div class="stores">
+        <a class="store apple" href="https://apps.apple.com/app/id6754284075">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.27-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.84c.63-.77 1.06-1.83.94-2.89-.91.04-2.01.61-2.66 1.37-.58.67-1.1 1.76-.96 2.8 1.01.08 2.05-.52 2.68-1.28z"/></svg>
+          <span><small>Download on the</small>App Store</span>
+        </a>
+        <a class="store ghost" href="#how"><span><small>New here?</small>See how it works</span></a>
       </div>
-      <div class="row">
-        <div class="avatar">MJ</div>
-        <div>
-          <div class="name">Marcus Johnson</div>
-          <div class="note">…test drove a <mark>Tesla</mark> last spring…</div>
-        </div>
-      </div>
+      <p class="note">Free for up to 10 people. Unlimited people is a one-time $4.99.</p>
+    </div>
+    <div class="shot">
+      <video class="phone" width="660" height="1434" poster="/screenshots/iphone-poster.webp" muted loop autoplay playsinline preload="metadata" aria-label="Forgetze on iPhone: typing the clue tesla finds Sarah Smith, and tapping her opens her notes, phone numbers and family">
+        <source src="/screenshots/iphone-search.mp4" type="video/mp4">
+      </video>
+      <script>
+        // Keep the hero still (poster only) for people who ask their device to reduce motion.
+        (function () {
+          var v = document.querySelector('.hero video.phone');
+          if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            v.removeAttribute('autoplay');
+            v.pause();
+          }
+        })();
+      </script>
     </div>
   </div>
+  <div class="bar rainbow"></div>
+</div>
 
-  <section class="container">
-    <h2>How it works</h2>
+<main>
+
+<section id="how">
+  <div class="wrap">
+    <h2>Search what you remember</h2>
+    <p class="sub">Forgetze keeps the small details that make a person memorable, then finds them from any one of those details.</p>
     <div class="steps">
-      <div class="step"><span class="num"></span><p><strong>Meet someone.</strong> Save the details you'd otherwise forget — where you met, what they do, their spouse and kids, anything at all.</p></div>
-      <div class="step"><span class="num"></span><p><strong>Forget their name.</strong> It happens to everyone. That's the whole point.</p></div>
-      <div class="step"><span class="num"></span><p><strong>Search what you remember.</strong> Type or speak "drives a Tesla" or "met at the hiking club" — and there they are.</p></div>
+      <div class="step"><h3>Meet someone</h3><p>Save what you would otherwise forget: where you met, what they do, their spouse and kids, anything at all.</p></div>
+      <div class="step"><h3>Forget their name</h3><p>It happens to everyone. That is the whole point of the app.</p></div>
+      <div class="step"><h3>Type or say a clue</h3><p>Search for "drives a Tesla" or "met at the hiking club". There they are, with the matching detail shown.</p></div>
     </div>
-  </section>
+    <p class="sub" style="margin:36px 0 12px;font-size:16px">Clues that find people in the sample contacts:</p>
+    <ul class="chips">
+      <li>drives a Tesla</li>
+      <li>hiking club</li>
+      <li>book club</li>
+      <li>Berkeley</li>
+      <li>yoga</li>
+      <li>game night</li>
+    </ul>
+  </div>
+</section>
 
-  <section class="container">
-    <h2>Built to remember, designed for privacy</h2>
-    <div class="cards">
-      <div class="card"><div class="icon">🔍</div><h3>Search anything you remember</h3><p>Every note, family member, address, and link is searchable — by typing or by voice.</p></div>
-      <div class="card"><div class="icon">👨‍👩‍👧</div><h3>The whole picture</h3><p>Birthdays, spouses, children, addresses, and social links — the details that make a person memorable.</p></div>
-      <div class="card"><div class="icon">🔒</div><h3>Yours alone</h3><p>No accounts, no ads. Your people stay on your devices and in your own iCloud, which only you can read. Forgetze never sees them. Only optional, anonymous feature counts, which you can turn off.</p></div>
-      <div class="card"><div class="icon">📥</div><h3>Easy start, safe keeping</h3><p>Import from Apple Contacts in one tap, and back up your library to a local file anytime.</p></div>
+<section id="screens" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>See it in action</h2>
+    <p class="sub">These are real screens from the app, with the sample people it starts with.</p>
+    <div class="devices" role="tablist" aria-label="Choose a device">
+      <button type="button" role="tab" id="tab-iphone" aria-controls="shots-iphone" aria-selected="true">iPhone</button>
+      <button type="button" role="tab" id="tab-ipad" aria-controls="shots-ipad" aria-selected="false" tabindex="-1">iPad</button>
     </div>
-  </section>
+    <div class="gallery" id="shots-iphone" role="tabpanel" aria-labelledby="tab-iphone">
+      <figure><img src="/screenshots/iphone-list.webp" width="660" height="1434" loading="lazy" alt="Everyone you know in one list, on iPhone"><figcaption>Everyone you know, in one list</figcaption></figure>
+      <figure><img src="/screenshots/iphone-search.webp" width="660" height="1434" loading="lazy" alt="Searching for a clue, on iPhone"><figcaption>Find anyone by what you recall</figcaption></figure>
+      <figure><img src="/screenshots/iphone-detail.webp" width="660" height="1434" loading="lazy" alt="A person's notes, phone numbers and family, on iPhone"><figcaption>Everything about them, together</figcaption></figure>
+      <figure><img src="/screenshots/iphone-control.webp" width="660" height="1434" loading="lazy" alt="The Forgetze button in Control Center, on iPhone"><figcaption>Search from Control Center</figcaption></figure>
+      <figure><img src="/screenshots/iphone-dark.webp" width="660" height="1434" loading="lazy" alt="Your people in dark mode, on iPhone"><figcaption>Your people, after dark</figcaption></figure>
+      <figure><img src="/screenshots/iphone-dark-detail.webp" width="660" height="1434" loading="lazy" alt="A person's details in dark mode, on iPhone"><figcaption>Every detail, in dark mode</figcaption></figure>
+    </div>
+    <div class="gallery wide" id="shots-ipad" role="tabpanel" aria-labelledby="tab-ipad" hidden>
+      <figure><img src="/screenshots/ipad-list.webp" width="1032" height="1376" loading="lazy" alt="Your people, on iPad"><figcaption>List and details, side by side</figcaption></figure>
+      <figure><img src="/screenshots/ipad-search.webp" width="1032" height="1376" loading="lazy" alt="Searching for a clue, on iPad"><figcaption>Find anyone by what you recall</figcaption></figure>
+      <figure><img src="/screenshots/ipad-detail.webp" width="1032" height="1376" loading="lazy" alt="A person's details, on iPad"><figcaption>Everything about them, at a glance</figcaption></figure>
+      <figure><img src="/screenshots/ipad-dark.webp" width="1032" height="1376" loading="lazy" alt="Dark mode, on iPad"><figcaption>Side by side, after dark</figcaption></figure>
+      <figure><img src="/screenshots/ipad-dark-search.webp" width="1032" height="1376" loading="lazy" alt="Search in dark mode, on iPad"><figcaption>Search, in dark mode</figcaption></figure>
+    </div>
+  </div>
+</section>
 
-  <section class="container pricing" id="pricing">
+<section id="features" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>Built to remember, private by design</h2>
+    <p class="sub">Everything you need to keep the people in your life straight, and nothing you do not.</p>
+    <div class="features">
+      <div class="feature" style="--c: var(--c-blue)">
+        <h3>Search anything you remember</h3>
+        <p>A note, a street, a child's name, a car. Forgetze finds the person and names the detail that matched, so you can trust the result.</p>
+      </div>
+      <div class="feature" style="--c: var(--c-purple)">
+        <h3>Say it instead of typing it</h3>
+        <p>Tap the microphone and speak what you remember. Add the Forgetze button to Control Center and one tap opens the app listening, from any screen.</p>
+      </div>
+      <div class="feature" style="--c: var(--c-pink)">
+        <h3>The whole picture</h3>
+        <p>Photos, phone numbers, email addresses, birthdays, a spouse, children, addresses and social links. The details that make a person memorable.</p>
+      </div>
+      <div class="feature" style="--c: var(--c-orange)">
+        <h3>Easy to start</h3>
+        <p>Import from Apple Contacts in one tap, then add the details it never held. You can try the app first with a set of sample people.</p>
+      </div>
+      <div class="feature" style="--c: var(--c-green)">
+        <h3>Private, with no account</h3>
+        <p>No account and no ads. Your people stay on your devices and in your own iCloud, which only you can read. Forgetze never sees them. <a href="/privacy.html">Read the privacy policy</a>.</p>
+      </div>
+      <div class="feature" style="--c: var(--c-cyan)">
+        <h3>On every device</h3>
+        <p>iPhone and iPad, in light or dark mode, in the color you choose. Your people sync through your own iCloud, so a new phone has them waiting.</p>
+      </div>
+    </div>
+    <h3 class="more-title">More features</h3>
+    <ul class="more">
+      <li><strong>Birthday reminders.</strong> Never miss one for the people you want to remember.</li>
+      <li><strong>Back up to a file.</strong> Save your library and restore it whenever you need it.</li>
+      <li><strong>Works offline.</strong> Search needs no internet connection.</li>
+      <li><strong>Your app color.</strong> Pick a theme color, in light or dark mode.</li>
+      <li><strong>Search that stays with you.</strong> Works the same in dark mode and on iPad.</li>
+      <li><strong>Anonymous counts you control.</strong> Optional feature counts, never your people or searches. Turn them off in Settings.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="pricing" style="padding-top: 16px;">
+  <div class="wrap">
     <h2>Simple, honest pricing</h2>
+    <p class="sub">Try everything first. Pay once only if you need more people.</p>
     <div class="price-card">
       <div class="price">Free <small>for up to 10 people</small></div>
       <ul>
@@ -201,16 +310,61 @@
         <li>No subscription. No ads. Ever.</li>
       </ul>
     </div>
-  </section>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>Questions, ideas or problems?</h2>
+    <p class="sub">Tell us what would make Forgetze better, ask a question, or report something that is not working. We read every message and reply by email.</p>
+    <form id="contact-form" novalidate>
+      <label>Your name (optional)
+        <input name="name" type="text" autocomplete="name" maxlength="100">
+      </label>
+      <label>Your email, so we can reply
+        <input name="email" type="email" autocomplete="email" required maxlength="200">
+      </label>
+      <label>This is a
+        <select name="kind">
+          <option value="suggestion">Suggestion</option>
+          <option value="question">Question</option>
+          <option value="problem">Problem</option>
+        </select>
+      </label>
+      <label>Message
+        <textarea name="message" required maxlength="5000"></textarea>
+      </label>
+      <label class="trap" aria-hidden="true">Leave this empty
+        <input name="website" type="text" tabindex="-1" autocomplete="off">
+      </label>
+      <button type="submit">Send message</button>
+      <p class="status" id="contact-status" role="status" aria-live="polite"></p>
+    </form>
+    <p class="sub" style="font-size:16px;margin-top:8px">Your email address and message go only to us, to answer you. You can also write to <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>.</p>
+  </div>
+</section>
+
+<section id="get" class="get">
+  <div class="bar rainbow"></div>
+  <div class="wrap">
+    <h2>Get Forgetze</h2>
+    <p class="sub">Forgetze is on the App Store now for iPhone and iPad. Free to try, with no account to make.</p>
+    <div class="stores">
+      <a class="store apple" href="https://apps.apple.com/app/id6754284075">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.02-2.3 1.88-3.4 1.96-3.46-1.07-1.56-2.73-1.78-3.32-1.8-1.41-.14-2.76.83-3.48.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.76 2.27-1.6 2.78-.41 6.9 1.15 9.16.76 1.1 1.67 2.34 2.86 2.3 1.15-.05 1.58-.74 2.97-.74 1.38 0 1.77.74 2.98.72 1.23-.02 2.01-1.12 2.76-2.23.87-1.28 1.23-2.52 1.25-2.58-.03-.01-2.4-.92-2.42-3.66zM14.1 5.84c.63-.77 1.06-1.83.94-2.89-.91.04-2.01.61-2.66 1.37-.58.67-1.1 1.76-.96 2.8 1.01.08 2.05-.52 2.68-1.28z"/></svg>
+        <span><small>Download on the</small>App Store</span>
+      </a>
+    </div>
+    <p class="note">Questions or ideas? Write to <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>.</p>
+  </div>
+</section>
+
 </main>
 
 <footer>
-  <div class="container">
-    <div class="links">
-      <a href="privacy.html">Privacy policy</a>
-      <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
-    </div>
-    <div>© 2026 Forgetze. Your people stay yours.</div>
+  <div class="wrap">
+    <a href="/privacy.html">Privacy policy</a> · <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
+    <p>© 2026 Forgetze. Your people stay yours.</p>
   </div>
 </footer>
 
@@ -242,5 +396,57 @@
   })();
 </script>
 
+<script>
+  // Sends the contact form to /api/contact, which emails hello@forgetze.com.
+  (function () {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    var status = document.getElementById('contact-status');
+    var button = form.querySelector('button');
+    var started = Date.now();
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      status.className = 'status';
+      if (!form.email.value || !form.email.checkValidity()) { status.textContent = 'Please enter a valid email address so we can reply.'; status.className = 'status bad'; form.email.focus(); return; }
+      if (form.message.value.trim().length < 5) { status.textContent = 'Please write a message.'; status.className = 'status bad'; form.message.focus(); return; }
+      button.disabled = true; status.textContent = 'Sending…';
+      fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: form.name.value, email: form.email.value, kind: form.kind.value, message: form.message.value, website: form.website.value, elapsed: Date.now() - started })
+      }).then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (res) {
+          if (res.ok) { form.reset(); status.textContent = 'Thank you! Your message was sent. We will reply by email.'; status.className = 'status ok'; }
+          else { status.textContent = res.d.error || 'The message could not be sent. Please email hello@forgetze.com instead.'; status.className = 'status bad'; }
+        })
+        .catch(function () { status.textContent = 'The message could not be sent. Please email hello@forgetze.com instead.'; status.className = 'status bad'; })
+        .then(function () { button.disabled = false; });
+    });
+  })();
+</script>
+
+<script>
+  // Switches the screenshots between iPhone and iPad.
+  (function () {
+    var tabs = [].slice.call(document.querySelectorAll('.devices [role="tab"]'));
+    function pick(tab) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+      });
+    }
+    tabs.forEach(function (t, i) {
+      t.addEventListener('click', function () { pick(t); });
+      t.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        var next = tabs[(i + d + tabs.length) % tabs.length];
+        pick(next); next.focus();
+      });
+    });
+  })();
+</script>
 </body>
 </html>
