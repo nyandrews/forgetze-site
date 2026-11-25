@@ -171,6 +171,18 @@
   footer p { margin: 8px 0 0; }
 
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  /* "More apps from us": one band per app, in that app's own colour, like the Master Dashboard headers. */
+  .more-apps { margin: 0 auto 22px; max-width: 1000px; text-align: left; }
+  .more-apps h2 { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; text-align: center; margin: 0 0 12px; color: inherit; font-weight: 700; }
+  .more-apps .ma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 880px) { .more-apps .ma-grid { grid-template-columns: 1fr; } }
+  .more-apps .ma-card { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 16px; color: #fff; }
+  .more-apps .ma-app { display: flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; min-width: 0; }
+  .more-apps .ma-app img { display: block; width: 44px; height: 44px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,.3), 0 0 0 1px rgba(255,255,255,.25); }
+  .more-apps .ma-app strong { display: block; font-size: 18px; line-height: 1.2; color: #fff; }
+  .more-apps .ma-app span { display: block; font-size: 15px; line-height: 1.3; color: #fff; }
+  .more-apps .ma-badge { display: block; line-height: 0; }
+  .more-apps .ma-badge img { display: block; height: 40px; width: auto; }
 </style>
 </head>
 <body>
@@ -380,8 +392,20 @@
 
 <footer>
   <div class="wrap">
+    <div class="more-apps">
+      <h2>More apps from us</h2>
+      <div class="ma-grid">
+      <div class="ma-card" style="background:#14213D">
+        <a class="ma-app" href="https://www.hockeybag.app"><img src="/apps/hockeybag.png" alt="" width="44" height="44"><span><strong>HockeyBag.App</strong><span>Never forget your hockey gear</span></span></a>
+        <a class="ma-badge" href="https://apps.apple.com/app/apple-store/id6823292085?pt=1734641&amp;ct=forgetze-footer&amp;mt=8"><img src="/app-store-badge.svg" alt="Download HockeyBag.App on the App Store" width="120" height="40"></a>
+      </div>
+      <div class="ma-card" style="background:#E8650E">
+        <a class="ma-app" href="https://www.theainews.app"><img src="/apps/theainews.png" alt="" width="44" height="44"><span><strong>TheAiNews.App</strong><span>AI news, distilled to what matters</span></span></a>
+        <a class="ma-badge" href="https://apps.apple.com/app/apple-store/id6774653701?pt=1734641&amp;ct=forgetze-footer&amp;mt=8"><img src="/app-store-badge.svg" alt="Download TheAiNews.App on the App Store" width="120" height="40"></a>
+      </div>
+      </div>
+    </div>
     <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
-    <p>More apps from us: <a href="https://www.hockeybag.app">HockeyBag.App</a>, a hockey gear checklist and game stats · <a href="https://www.theainews.app">TheAiNews.App</a>, AI news in short summaries</p>
     <p>© 2026 Forgetze. Your people stay yours.</p>
   </div>
 </footer>
