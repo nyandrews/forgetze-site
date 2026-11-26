@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Dashboard · Forgetze</title>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<style>
+  /* Same colors and type as the home page. */
+  :root {
+    color-scheme: light dark;
+    --indigo: #161179; --button: #161179;
+    --c-cyan: #12AEDB; --c-blue: #2B6CF6; --c-purple: #8E44E8; --c-pink: #E83A86;
+    --c-red: #E5484D; --c-orange: #F08A12; --c-yellow: #E0A800; --c-green: #1FA85A;
+    --bg: #F2F2F7; --card: #FFFFFF; --text: #1C1C1E; --muted: #6A6A70; --link: #3B30D4; --frame: #D1D1D6;
+    --bar: #3B30D4; --grid: #E5E5EA;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #000000; --card: #1C1C1E; --text: #F2F2F7; --muted: #9A9AA1; --link: #9C97FF; --frame: #3A3A3C;
+      --button: #4A3FE0; --bar: #7D75FF; --grid: #2C2C2E; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  a { color: var(--link); }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  .top { background: var(--indigo); color: #fff; position: relative; }
+  .top::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 6px; background: linear-gradient(90deg, var(--c-cyan), var(--c-blue), var(--c-purple), var(--c-pink), var(--c-red), var(--c-orange), var(--c-yellow), var(--c-green)); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 14px; padding-bottom: 20px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; font-weight: 800; font-size: 20px; letter-spacing: -0.01em; }
+  .brand img { width: 36px; height: 36px; border-radius: 9px; }
+  .top #actions { display: flex; gap: 8px; }
+  .top button { font: inherit; font-size: 15px; color: #fff; background: transparent; border: 1.5px solid rgba(255,255,255,.4); border-radius: 10px; padding: 6px 14px; cursor: pointer; }
+  .top button:hover { border-color: #fff; }
+
+  h1 { font-size: clamp(28px, 4vw, 38px); line-height: 1.15; margin: 32px 0 4px; letter-spacing: -0.01em; }
+  h2 { font-size: 24px; margin: 40px 0 14px; }
+  .sub { color: var(--muted); font-size: 16px; margin: 0; }
+
+  /* Sign in */
+  .signin { max-width: 380px; margin: 64px auto; background: var(--card); border-radius: 16px; padding: 28px; }
+  .signin h1 { margin-top: 0; font-size: 26px; }
+  .signin input { width: 100%; font: inherit; padding: 11px 14px; border-radius: 12px; border: 1.5px solid var(--frame); background: var(--bg); color: var(--text); margin: 14px 0 12px; }
+  .btn { font: inherit; font-weight: 600; background: var(--button); color: #fff; border: 0; border-radius: 12px; padding: 11px 20px; cursor: pointer; width: 100%; }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .error { color: var(--link); font-size: 15px; margin: 10px 0 0; min-height: 1.5em; }
+
+  /* Headline numbers */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-top: 24px; }
+  .tile { background: var(--card); border-radius: 16px; padding: 18px 20px 16px; border-top: 5px solid var(--c); }
+  .tile b { display: block; font-size: 36px; line-height: 1.1; letter-spacing: -0.02em; }
+  .tile span { color: var(--muted); font-size: 15px; }
+
+  /* Chart cards */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); gap: 16px; }
+  .card { background: var(--card); border-radius: 16px; padding: 20px 22px; min-width: 0; }
+  .card.wide { grid-column: 1 / -1; }
+  .card h3 { font-size: 18px; margin: 0; }
+  .card p.note { color: var(--muted); font-size: 14px; margin: 2px 0 14px; }
+  .empty { color: var(--muted); font-size: 15px; padding: 18px 0; }
+
+  /* Column chart: thin bars on a light grid, rounded tops, hover shows the number */
+  .cols { display: flex; align-items: flex-end; gap: 2px; height: 160px; border-bottom: 1px solid var(--frame);
+    background: linear-gradient(to top, var(--grid) 1px, transparent 1px) 0 0 / 100% 25%; }
+  .cols .col { flex: 1; height: 100%; display: flex; align-items: flex-end; position: relative; }
+  .cols .col i { display: block; width: 100%; max-width: 28px; margin: 0 auto; background: var(--bar); border-radius: 4px 4px 0 0; min-height: 0; }
+  .cols .col:hover i { filter: brightness(1.15); }
+  .cols .col:hover::after { content: attr(data-tip); position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); white-space: nowrap;
+    background: var(--indigo); color: #fff; font-size: 13px; padding: 4px 8px; border-radius: 8px; z-index: 2; pointer-events: none; }
+  .axis { display: flex; gap: 2px; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .axis span { flex: 1; text-align: center; white-space: nowrap; overflow: visible; }
+  .peak { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .peak b { color: var(--text); }
+
+  /* Row chart: label, bar, number */
+  .rows { display: grid; grid-template-columns: minmax(90px, max-content) 1fr auto; gap: 8px 12px; align-items: center; font-size: 15px; }
+  .rows .bar { height: 14px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+  .rows .bar i { display: block; height: 100%; background: var(--bar); border-radius: 0 4px 4px 0; }
+  .rows .n { font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+
+  /* Coming back table */
+  table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+  th, td { padding: 8px 6px; text-align: center; border-bottom: 1px solid var(--grid); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  th:first-child, td:first-child { text-align: left; }
+  td.pct { font-weight: 600; }
+  td.pct small { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+
+  footer { padding: 40px 0 48px; color: var(--muted); font-size: 14px; text-align: center; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/icon-96.png" alt="" width="36" height="36"><span>Forgetze</span></a>
+    <div id="actions" hidden>
+      <button type="button" id="refresh">Refresh</button>
+      <button type="button" id="signout">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="signin" id="signin">
+    <h1>Dashboard</h1>
+    <p class="sub" id="intro">Type the dashboard password to see how the app and website are doing.</p>
+    <input type="password" id="password" autocomplete="current-password" placeholder="Password" required>
+    <button class="btn" id="go">Show the numbers</button>
+    <p class="error" id="error" role="alert"></p>
+  </form>
+
+  <div id="board" hidden>
+    <h1>Dashboard</h1>
+    <p class="sub" id="updated"></p>
+
+    <div class="tiles" id="tiles"></div>
+
+    <h2>The app</h2>
+    <div class="grid">
+      <div class="card wide"><h3>People using the app each day</h3><p class="note">Last 30 days.</p><div id="dailyUsers"></div></div>
+      <div class="card"><h3>Busiest times of day</h3><p class="note">App opens in the last 30 days, Eastern time.</p><div id="hours"></div></div>
+      <div class="card"><h3>Busiest days of the week</h3><p class="note">App opens in the last 30 days.</p><div id="weekdays"></div></div>
+      <div class="card"><h3>Features used</h3><p class="note">People who did each one in the last 30 days.</p><div id="features"></div></div>
+      <div class="card"><h3>App version</h3><p class="note">People on each version in the last 30 days.</p><div id="versions"></div></div>
+      <div class="card wide"><h3>Coming back</h3><p class="note">People grouped by the week they first opened the app, and how many opened it again in each later week.</p><div id="comingBack"></div></div>
+    </div>
+
+    <h2>The website</h2>
+    <div class="grid">
+      <div class="card wide"><h3>Website visits each day</h3><p class="note">Pages opened on forgetze.com in the last 30 days.</p><div id="siteDaily"></div></div>
+      <div class="card"><h3>Pages opened</h3><p class="note">Visits in the last 30 days.</p><div id="pages"></div></div>
+      <div class="card"><h3>Where visitors came from</h3><p class="note">The site people were on before. "Typed or bookmarked" means they came straight in.</p><div id="referrers"></div></div>
+    </div>
+  </div>
+</main>
+
+<footer>Counts are anonymous. Nobody can be identified from them.</footer>
+
+<script>
+(function () {
+  var KEY = 'forgetze-dashboard-password';
+  var DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var FEATURE_NAMES = {
+    contact_added: 'Added a person', contacts_imported: 'Imported from Apple Contacts', search_used: 'Searched',
+    paywall_viewed: 'Saw the Unlimited people offer', purchase_completed: 'Bought Unlimited people'
+  };
+  var PAGE_NAMES = { '/': 'Home page', '/index.html': 'Home page', '/privacy.html': 'Privacy policy', '/terms.html': 'Terms', '/press.html': 'Press kit' };
+  var $ = function (id) { return document.getElementById(id); };
+
+  function store(v) { try { v ? sessionStorage.setItem(KEY, v) : sessionStorage.removeItem(KEY); } catch (e) {} }
+  function saved() { try { return sessionStorage.getItem(KEY); } catch (e) { return null; } }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function num(n) { return Number(n).toLocaleString('en-US'); }
+  function hourName(h) { return (h % 12 === 0 ? 12 : h % 12) + (h < 12 ? ' AM' : ' PM'); }
+  function shortDate(iso) { var d = new Date(iso + 'T12:00:00'); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+
+  // Fill in days with no activity so the chart shows a full 30 days.
+  function last30(rows) {
+    var map = {}; rows.forEach(function (r) { map[r[0]] = r[1]; });
+    var out = [], d = new Date();
+    for (var i = 29; i >= 0; i--) {
+      var x = new Date(d.getFullYear(), d.getMonth(), d.getDate() - i);
+      var iso = x.getFullYear() + '-' + String(x.getMonth() + 1).padStart(2, '0') + '-' + String(x.getDate()).padStart(2, '0');
+      out.push([iso, map[iso] || 0]);
+    }
+    return out;
+  }
+
+  // Column chart. labels: text under each column; every: label every Nth column.
+  function columns(el, values, labels, tips, every) {
+    var max = Math.max.apply(null, values.concat([1]));
+    if (values.every(function (v) { return !v; })) { el.innerHTML = '<div class="empty">' + el.dataset.empty + '</div>'; return; }
+    var cols = values.map(function (v, i) {
+      return '<div class="col" data-tip="' + esc(tips[i]) + '"><i style="height:' + (v / max * 100) + '%"></i></div>';
+    }).join('');
+    var axis = labels.map(function (l, i) { return '<span>' + (i % every === 0 ? esc(l) : '') + '</span>'; }).join('');
+    var top = values.indexOf(max);
+    el.innerHTML = '<div class="cols">' + cols + '</div><div class="axis">' + axis + '</div>' +
+      '<div class="peak">Busiest: <b>' + esc(labels[top]) + '</b> with ' + num(max) + '</div>';
+  }
+
+  function rows(el, items) {
+    if (!items.length) { el.innerHTML = '<div class="empty">' + el.dataset.empty + '</div>'; return; }
+    var max = Math.max.apply(null, items.map(function (r) { return r[1]; }).concat([1]));
+    el.innerHTML = '<div class="rows">' + items.map(function (r) {
+      return '<span>' + esc(r[0]) + '</span><div class="bar"><i style="width:' + (r[1] / max * 100) + '%"></i></div><span class="n">' + num(r[1]) + '</span>';
+    }).join('') + '</div>';
+  }
+
+  function comingBack(el, data) {
+    if (!data.length) { el.innerHTML = '<div class="empty">' + el.dataset.empty + '</div>'; return; }
+    var cohorts = {}, order = [], maxN = 0;
+    data.forEach(function (r) {
+      if (!cohorts[r[0]]) { cohorts[r[0]] = {}; order.push(r[0]); }
+      cohorts[r[0]][r[1]] = r[2]; maxN = Math.max(maxN, r[1]);
+    });
+    maxN = Math.min(maxN, 6);
+    var head = '<tr><th>Started the week of</th><th>People</th>';
+    for (var n = 1; n <= maxN; n++) head += '<th>' + n + (n === 1 ? ' week' : ' weeks') + ' later</th>';
+    var body = order.map(function (c) {
+      var start = cohorts[c][0] || 0, tr = '<tr><td>' + shortDate(c) + '</td><td>' + num(start) + '</td>';
+      var weeksSince = Math.floor((Date.now() - new Date(c + 'T00:00:00')) / 6048e5);
+      for (var n = 1; n <= maxN; n++) {
+        if (n > weeksSince) { tr += '<td></td>'; continue; }
+        var k = cohorts[c][n] || 0, pct = start ? Math.round(k / start * 100) : 0;
+        tr += '<td class="pct">' + pct + '%<small>' + num(k) + ' of ' + num(start) + '</small></td>';
+      }
+      return tr + '</tr>';
+    }).join('');
+    el.innerHTML = maxN ? '<table>' + head + '</tr>' + body + '</table>'
+      : '<table>' + head + '</tr>' + body + '</table><p class="note" style="margin-top:10px">Later weeks appear once the first week is over.</p>';
+  }
+
+  // Shown when the password or PostHog key has not been added in Vercel.
+  function notSetUp() {
+    $('intro').textContent = 'Not set up yet. The password or PostHog key still needs to be added in Vercel.';
+    $('password').hidden = true; $('go').hidden = true;
+  }
+
+  function render(res) {
+    var d = res.data, h = d.headline[0] || [0, 0, 0, 0, 0];
+    $('updated').textContent = 'Updated ' + new Date(res.updated).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) + '.';
+    var tiles = [
+      [h[0], 'People using the app this week', 'var(--c-blue)'],
+      [d.newThisWeek[0] ? d.newThisWeek[0][0] : 0, 'New people this week', 'var(--c-orange)'],
+      [h[2], 'App opens this week', 'var(--c-green)'],
+      [h[1], 'People in the last 30 days', 'var(--c-purple)'],
+      [h[4], 'Purchases in the last 30 days', 'var(--c-pink)'],
+      [h[3], 'Website visits this week', 'var(--c-cyan)']
+    ];
+    $('tiles').innerHTML = tiles.map(function (t) { return '<div class="tile" style="--c:' + t[2] + '"><b>' + num(t[0]) + '</b><span>' + t[1] + '</span></div>'; }).join('');
+
+    ['dailyUsers', 'hours', 'weekdays', 'features', 'versions', 'comingBack'].forEach(function (id) { $(id).dataset.empty = 'No app activity yet.'; });
+    ['siteDaily', 'pages', 'referrers'].forEach(function (id) { $(id).dataset.empty = 'No website visits yet.'; });
+
+    var du = last30(d.dailyUsers);
+    columns($('dailyUsers'), du.map(function (r) { return r[1]; }), du.map(function (r) { return shortDate(r[0]); }),
+      du.map(function (r) { return shortDate(r[0]) + ': ' + r[1] + (r[1] === 1 ? ' person' : ' people'); }), 7);
+
+    var hrs = []; for (var i = 0; i < 24; i++) hrs.push(0);
+    d.hours.forEach(function (r) { hrs[r[0]] = r[1]; });
+    var hl = hrs.map(function (v, i) { return hourName(i); });
+    columns($('hours'), hrs, hl, hl.map(function (l, i) { return l + ': ' + hrs[i] + ' opens'; }), 6);
+
+    var wd = [0, 0, 0, 0, 0, 0, 0];
+    d.weekdays.forEach(function (r) { wd[r[0] - 1] = r[1]; });
+    columns($('weekdays'), wd, DAY_NAMES, DAY_NAMES.map(function (l, i) { return l + ': ' + wd[i] + ' opens'; }), 1);
+
+    rows($('features'), d.features.map(function (r) { return [FEATURE_NAMES[r[0]] || r[0], r[1]]; }));
+    rows($('versions'), d.versions.map(function (r) { return [r[0] || 'Unknown', r[1]]; }));
+    comingBack($('comingBack'), d.comingBack);
+
+    var sd = last30(d.siteDaily);
+    columns($('siteDaily'), sd.map(function (r) { return r[1]; }), sd.map(function (r) { return shortDate(r[0]); }),
+      sd.map(function (r) { return shortDate(r[0]) + ': ' + r[1] + (r[1] === 1 ? ' visit' : ' visits'); }), 7);
+    rows($('pages'), d.pages.map(function (r) { return [PAGE_NAMES[r[0]] || r[0] || 'Unknown', r[1]]; }));
+    rows($('referrers'), d.referrers.map(function (r) { return [r[0] === '$direct' || !r[0] ? 'Typed or bookmarked' : r[0], r[1]]; }));
+  }
+
+  function load(password) {
+    $('go').disabled = true; $('error').textContent = '';
+    return fetch('/api/dashboard', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password: password }) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, status: r.status, body: j }; }); })
+      .then(function (r) {
+        if (!r.ok) {
+          if (r.body.notSetUp) notSetUp();
+          if (r.status === 401) store(null);
+          throw new Error(r.body.error || 'Something went wrong.');
+        }
+        store(password);
+        render(r.body);
+        $('signin').hidden = true; $('board').hidden = false; $('actions').hidden = false;
+      })
+      .catch(function (e) {
+        $('signin').hidden = false; $('board').hidden = true; $('actions').hidden = true;
+        $('error').textContent = e.message || 'Could not load the numbers. Try again.';
+      })
+      .then(function () { $('go').disabled = false; });
+  }
+
+  $('signin').addEventListener('submit', function (e) { e.preventDefault(); load($('password').value); });
+  $('refresh').addEventListener('click', function () { var p = saved(); if (p) load(p); });
+  $('signout').addEventListener('click', function () { store(null); location.reload(); });
+  window.renderDashboard = render; // used by the local preview with sample numbers
+  // Ask first whether the Vercel settings are there, so the page can say so plainly.
+  fetch('/api/dashboard').then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) { if (j && j.ready === false) notSetUp(); })
+    .catch(function () {});
+  var p = saved(); if (p) load(p);
+})();
+</script>
+</body>
+</html>
