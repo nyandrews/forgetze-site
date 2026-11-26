@@ -7,13 +7,13 @@
 <meta name="description" content="Forgetze finds people by what you remember about them: where you met, what they drive, their kids' names. Private, no account, for iPhone and iPad. On the App Store now.">
 <meta property="og:title" content="Forgetze · Never forget a name again">
 <meta property="og:description" content="Find people by what you remember about them. Private, no account, for iPhone and iPad.">
-<meta property="og:image" content="https://forgetze.com/og-image.png">
+<meta property="og:image" content="https://www.forgetze.com/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Forgetze: Never forget a name again. Find people by what you remember about them.">
-<meta property="og:url" content="https://forgetze.com/">
+<meta property="og:url" content="https://www.forgetze.com/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://forgetze.com/">
+<link rel="canonical" href="https://www.forgetze.com/">
 <meta name="theme-color" content="#161179">
 <meta name="apple-itunes-app" content="app-id=6754284075">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
@@ -24,14 +24,70 @@
  "@context": "https://schema.org",
  "@type": "MobileApplication",
  "name": "Forgetze",
- "url": "https://forgetze.com/",
+ "url": "https://www.forgetze.com/",
  "downloadUrl": "https://apps.apple.com/app/id6754284075",
  "installUrl": "https://apps.apple.com/app/id6754284075",
  "operatingSystem": "iOS",
  "applicationCategory": "LifestyleApplication",
  "description": "Forgetze finds people by what you remember about them: where you met, what they drive, their kids' names. Private, no account, for iPhone and iPad.",
- "image": "https://forgetze.com/icon.png",
+ "image": "https://www.forgetze.com/icon.png",
  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Is Forgetze free?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes, for up to 10 people, with every feature included from day one. Unlimited people is a one-time $4.99 unlock. There is no subscription and there are no ads."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do I need an account?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. There is nothing to sign up for."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where are my people kept?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "On your devices and, when iCloud sync is on, in your own iCloud, which only you can read. Forgetze never sees them."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which devices does it run on?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "iPhone and iPad, in light or dark mode. Your people sync through your own iCloud, so a new phone has them waiting."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is there an Android version?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Forgetze is for iPhone and iPad."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do birthday reminders work?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Turn on Birthday reminders in the app's Settings, then choose when to hear about a birthday, from 1 month to 1 day before. Your device shows the reminder at 9 in the morning. You get reminders for each person, their spouse and their children."
+   }
+  }
+ ]
 }
 </script>
 <style>
@@ -64,6 +120,7 @@
   nav a:hover { color: #fff; }
   nav a.pill { background: #fff; color: var(--indigo); font-weight: 700; padding: 6px 14px; border-radius: 999px; }
   @media (max-width: 700px) { nav a:not(.pill) { display: none; } }
+  @media (max-width: 920px) { nav a[href="#questions"] { display: none; } }
 
   /* Hero */
   .hero { background: var(--indigo); color: #fff; overflow: hidden; position: relative; }
@@ -143,6 +200,23 @@
   .price-card li { padding: 6px 0 6px 28px; position: relative; }
   .price-card li::before { content: "✓"; position: absolute; left: 0; color: var(--c-green); font-weight: 800; }
 
+  /* Questions */
+  .faq { background: var(--card); border-radius: 16px; padding: 4px 24px; margin-top: 22px; }
+  .faq details { border-top: 1px solid var(--frame); }
+  .faq details:first-child { border-top: 0; }
+  .faq summary { cursor: pointer; font-weight: 600; padding: 16px 28px 16px 0; list-style: none; position: relative; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--link); font-size: 24px; font-weight: 400; line-height: 1; }
+  .faq details[open] summary::after { content: "\2212"; }
+  .faq summary:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; border-radius: 6px; }
+  .faq p { margin: 0 0 18px; color: var(--muted); max-width: 44em; }
+
+  /* About */
+  .about { background: var(--card); border-radius: 16px; padding: 22px 24px; margin-top: 22px; }
+  .about::before { content: ""; display: block; width: 112px; height: 6px; border-radius: 3px; background: var(--link); margin-bottom: 16px; }
+  .about p { margin: 0; font-size: 18px; max-width: 44em; }
+  .about .press-note { margin-top: 14px; font-size: 16px; color: var(--muted); }
+
   /* Contact form */
   .contact { background: var(--card); }
   .contact form { max-width: 560px; display: grid; gap: 14px; }
@@ -194,6 +268,7 @@
       <a href="#how">How it works</a>
       <a href="#screens">Screenshots</a>
       <a href="#features">Features</a>
+      <a href="#questions">Questions</a>
       <a href="#contact">Contact</a>
       <a href="/privacy.html">Privacy</a>
       <a class="pill" href="https://apps.apple.com/app/apple-store/id6754284075?pt=1734641&amp;ct=website-nav&amp;mt=8">Get the app</a>
@@ -342,6 +417,48 @@
   </div>
 </section>
 
+<section id="questions" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>Questions people ask</h2>
+    <div class="faq">
+      <details>
+        <summary>Is Forgetze free?</summary>
+        <p>Yes, for up to 10 people, with every feature included from day one. Unlimited people is a one-time $4.99 unlock. There is no subscription and there are no ads.</p>
+      </details>
+      <details>
+        <summary>Do I need an account?</summary>
+        <p>No. There is nothing to sign up for.</p>
+      </details>
+      <details>
+        <summary>Where are my people kept?</summary>
+        <p>On your devices and, when iCloud sync is on, in your own iCloud, which only you can read. Forgetze never sees them.</p>
+      </details>
+      <details>
+        <summary>Which devices does it run on?</summary>
+        <p>iPhone and iPad, in light or dark mode. Your people sync through your own iCloud, so a new phone has them waiting.</p>
+      </details>
+      <details>
+        <summary>Is there an Android version?</summary>
+        <p>No. Forgetze is for iPhone and iPad.</p>
+      </details>
+      <details>
+        <summary>How do birthday reminders work?</summary>
+        <p>Turn on Birthday reminders in the app&#x27;s Settings, then choose when to hear about a birthday, from 1 month to 1 day before. Your device shows the reminder at 9 in the morning. You get reminders for each person, their spouse and their children.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="about" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>About us</h2>
+    <div class="about">
+      <p>Forgetze is made by the Andrews family, from Central New York. It keeps the small details that make a person memorable, then finds them from any one of those details. We also make HockeyBag.App and TheAiNews.App.</p>
+      <p class="press-note">Writing about Forgetze? The <a href="/press.html">press kit</a> has app facts, screenshots and the icon.</p>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="contact">
   <div class="wrap">
     <h2>Questions, ideas or problems?</h2>
@@ -405,8 +522,8 @@
       </div>
       </div>
     </div>
-    <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
-    <p>© 2026 Forgetze. Your people stay yours.</p>
+    <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms</a> · <a href="/press.html">Press kit</a> · <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
+    <p>Made by the Andrews family · © 2026 Forgetze · Your people stay yours.</p>
   </div>
 </footer>
 

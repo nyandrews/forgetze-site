@@ -6,5 +6,13 @@
       "destination": "https://us.posthog.com/project/694584/dashboard/2272791",
       "permanent": false
     }
+  ],
+  "headers": [
+    {
+      "source": "/dashboard.html",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    }
   ]
 }
