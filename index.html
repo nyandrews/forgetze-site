@@ -211,6 +211,11 @@
   .faq summary:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; border-radius: 6px; }
   .faq p { margin: 0 0 18px; color: var(--muted); max-width: 44em; }
 
+  /* About */
+  .about { background: var(--card); border-radius: 16px; padding: 22px 24px; margin-top: 22px; }
+  .about::before { content: ""; display: block; width: 112px; height: 6px; border-radius: 3px; background: var(--link); margin-bottom: 16px; }
+  .about p { margin: 0; font-size: 18px; max-width: 44em; }
+
   /* Contact form */
   .contact { background: var(--card); }
   .contact form { max-width: 560px; display: grid; gap: 14px; }
@@ -443,6 +448,15 @@
   </div>
 </section>
 
+<section id="about" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>About us</h2>
+    <div class="about">
+      <p>Forgetze is made by the Andrews family, from Central New York. It keeps the small details that make a person memorable, then finds them from any one of those details. We also make HockeyBag.App and TheAiNews.App.</p>
+    </div>
+  </div>
+</section>
+
 <section id="contact" class="contact">
   <div class="wrap">
     <h2>Questions, ideas or problems?</h2>
@@ -507,7 +521,7 @@
       </div>
     </div>
     <a href="/privacy.html">Privacy policy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>
-    <p>© 2026 Forgetze. Your people stay yours.</p>
+    <p>Made by the Andrews family · © 2026 Forgetze · Your people stay yours.</p>
   </div>
 </footer>
 
