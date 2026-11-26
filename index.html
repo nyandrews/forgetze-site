@@ -34,6 +34,62 @@
  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Is Forgetze free?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes, for up to 10 people, with every feature included from day one. Unlimited people is a one-time $4.99 unlock. There is no subscription and there are no ads."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do I need an account?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. There is nothing to sign up for."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where are my people kept?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "On your devices and, when iCloud sync is on, in your own iCloud, which only you can read. Forgetze never sees them."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Which devices does it run on?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "iPhone and iPad, in light or dark mode. Your people sync through your own iCloud, so a new phone has them waiting."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is there an Android version?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Forgetze is for iPhone and iPad."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do birthday reminders work?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Turn on Birthday reminders in the app's Settings, then choose when to hear about a birthday, from 1 month to 1 day before. Your device shows the reminder at 9 in the morning. You get reminders for each person, their spouse and their children."
+   }
+  }
+ ]
+}
+</script>
 <style>
   /* Colors come from the app icon: deep indigo, and the rainbow brain. */
   :root {
@@ -64,6 +120,7 @@
   nav a:hover { color: #fff; }
   nav a.pill { background: #fff; color: var(--indigo); font-weight: 700; padding: 6px 14px; border-radius: 999px; }
   @media (max-width: 700px) { nav a:not(.pill) { display: none; } }
+  @media (max-width: 920px) { nav a[href="#questions"] { display: none; } }
 
   /* Hero */
   .hero { background: var(--indigo); color: #fff; overflow: hidden; position: relative; }
@@ -143,6 +200,17 @@
   .price-card li { padding: 6px 0 6px 28px; position: relative; }
   .price-card li::before { content: "✓"; position: absolute; left: 0; color: var(--c-green); font-weight: 800; }
 
+  /* Questions */
+  .faq { background: var(--card); border-radius: 16px; padding: 4px 24px; margin-top: 22px; }
+  .faq details { border-top: 1px solid var(--frame); }
+  .faq details:first-child { border-top: 0; }
+  .faq summary { cursor: pointer; font-weight: 600; padding: 16px 28px 16px 0; list-style: none; position: relative; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: var(--link); font-size: 24px; font-weight: 400; line-height: 1; }
+  .faq details[open] summary::after { content: "\2212"; }
+  .faq summary:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; border-radius: 6px; }
+  .faq p { margin: 0 0 18px; color: var(--muted); max-width: 44em; }
+
   /* Contact form */
   .contact { background: var(--card); }
   .contact form { max-width: 560px; display: grid; gap: 14px; }
@@ -194,6 +262,7 @@
       <a href="#how">How it works</a>
       <a href="#screens">Screenshots</a>
       <a href="#features">Features</a>
+      <a href="#questions">Questions</a>
       <a href="#contact">Contact</a>
       <a href="/privacy.html">Privacy</a>
       <a class="pill" href="https://apps.apple.com/app/apple-store/id6754284075?pt=1734641&amp;ct=website-nav&amp;mt=8">Get the app</a>
@@ -338,6 +407,38 @@
         <li>Unlimited people: one-time $4.99 unlock</li>
         <li>No subscription. No ads. Ever.</li>
       </ul>
+    </div>
+  </div>
+</section>
+
+<section id="questions" style="padding-top: 16px;">
+  <div class="wrap">
+    <h2>Questions people ask</h2>
+    <div class="faq">
+      <details>
+        <summary>Is Forgetze free?</summary>
+        <p>Yes, for up to 10 people, with every feature included from day one. Unlimited people is a one-time $4.99 unlock. There is no subscription and there are no ads.</p>
+      </details>
+      <details>
+        <summary>Do I need an account?</summary>
+        <p>No. There is nothing to sign up for.</p>
+      </details>
+      <details>
+        <summary>Where are my people kept?</summary>
+        <p>On your devices and, when iCloud sync is on, in your own iCloud, which only you can read. Forgetze never sees them.</p>
+      </details>
+      <details>
+        <summary>Which devices does it run on?</summary>
+        <p>iPhone and iPad, in light or dark mode. Your people sync through your own iCloud, so a new phone has them waiting.</p>
+      </details>
+      <details>
+        <summary>Is there an Android version?</summary>
+        <p>No. Forgetze is for iPhone and iPad.</p>
+      </details>
+      <details>
+        <summary>How do birthday reminders work?</summary>
+        <p>Turn on Birthday reminders in the app&#x27;s Settings, then choose when to hear about a birthday, from 1 month to 1 day before. Your device shows the reminder at 9 in the morning. You get reminders for each person, their spouse and their children.</p>
+      </details>
     </div>
   </div>
 </section>
