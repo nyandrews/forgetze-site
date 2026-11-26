@@ -239,6 +239,11 @@
   .get .sub { color: rgba(255,255,255,.82); margin-left: auto; margin-right: auto; }
   .get .stores { justify-content: center; }
   .get .note a { color: #fff; }
+  /* Scan to download: shown on computers only. Phones and tablets tap the button. */
+  .get .qr { display: none; }
+  @media (pointer: fine) { .get .qr { display: flex; flex-direction: column; align-items: center; gap: 12px; width: max-content; margin: 48px auto 0; text-decoration: none; } }
+  .get .qr img { width: 120px; height: 120px; padding: 8px; background: #fff; border-radius: 12px; }
+  .get .qr span { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.7); }
   .get .bar { position: absolute; left: 0; right: 0; top: 0; height: 6px; }
 
   footer { padding: 32px 0 48px; color: var(--muted); font-size: 15px; text-align: center; }
@@ -502,6 +507,10 @@
       </a>
     </div>
     <p class="note">Questions or ideas? Write to <a href="mailto:hello@forgetze.com">hello@forgetze.com</a>.</p>
+    <a class="qr" href="https://apps.apple.com/app/apple-store/id6754284075?pt=1734641&amp;ct=website-qr&amp;mt=8" aria-label="Scan the QR code to download on the App Store">
+      <img src="/app-store-qr.svg" alt="QR code linking to Forgetze on the App Store" width="120" height="120">
+      <span>Scan to download</span>
+    </a>
   </div>
 </section>
 
